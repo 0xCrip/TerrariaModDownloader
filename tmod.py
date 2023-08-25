@@ -33,7 +33,7 @@ def download_mod(mod_name):
     response = requests.get(mod_url)
     if response.status_code == 200:
         if os.path.exists(f'{MODS_PATH}{mod_name}.tmod'):
-            print('Mod already installed. Skipping...')
+            print(f'{mod_name} already installed. Skipping...')
         else:
             with open('modhistory.txt', 'a+') as history_file:
                 lines = history_file.readlines()
@@ -58,7 +58,7 @@ def download_mod(mod_name):
         print(f'Failed to find mod: "{mod_name}"')
         print('Remember: Sometimes mod names are different from the title of the mod.')
         print('Example -> Title = AutoReforge | [[Mod Name]] = AutoReroll')
-        print('Also be as case-sensitive as you can.')
+        print('Be as case-sensitive as you can.')
         s_line_color('red')
 
         # Ask the user to provide the mod URL
@@ -88,7 +88,7 @@ def install_from_file():  # Option 2
     print(
         'This program requires an existing wordlist, likely from a friend to be passed into the program. It will then '
         'download all mods your friend has installed.')
-    print(colored('Note:',
+    print(colored('Note: ',
                   'red') + 'Make sure the files are formatted like this with a single line for each mod,\nwith a '
                            'space between the Mod name and URL.')
     print('Mod_Name Link_To_Mod_Download')
@@ -96,7 +96,8 @@ def install_from_file():  # Option 2
     print('etc')
     s_line_color('green')
 
-    input_file = input('Enter the text file name stored in the program\'s directory: ')
+    input_file = input(
+        'Enter the text file name stored in the program\'s directory: ')
     if input_file == 'quit':
         clear_terminal()
         sys.exit()
@@ -127,7 +128,8 @@ def install_from_file():  # Option 2
 
 # Function to install mods from the terminal
 def install_from_terminal():  # Option 1
-    print(colored('Terraria Single File Installer', 'red', attrs=['bold', 'blink']))
+    print(colored('Terraria Single File Installer',
+          'red', attrs=['bold', 'blink']))
     print('This section of the program installs Terraria files from a mod website.\nThis is done one at a time.')
     print('Note: Sometimes mod names are different from the title of the mod.')
     print('Example -> Title = AutoReforge | [[Mod Name]] = AutoReroll')
@@ -170,7 +172,8 @@ def clear_terminal():
 if __name__ == "__main__":
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print(colored('Terraria Mod Installer', 'red', attrs=['bold', 'blink']))
+        print(colored('Terraria Mod Installer',
+              'red', attrs=['bold', 'blink']))
         print('The main aim of this program is to make it easy to install Terraria mods.')
         print('Either through the Mod name or through a friend\'s formatted mod list.')
         print('Select an option for more information.')
