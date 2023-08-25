@@ -1,9 +1,4 @@
 # TerrariaModDownloader
-A script designed to make downloading scripts on Terraria relatively easy.
-
-# Project Title
-
-TerrariaModDownloader
 
 ## Description
 
