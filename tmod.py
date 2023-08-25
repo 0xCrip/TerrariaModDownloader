@@ -21,6 +21,12 @@ def s_line_color(color):
     print(line)
 
 
+# Function to clear the terminal
+def clear_terminal():
+    input('Press Enter to continue...')
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 # Function to check if a string has only one word
 def one_word(user_mod):
     words = user_mod.split()
@@ -162,13 +168,10 @@ def install_from_terminal():  # Option 1
     else:
         download_mod(mod_name)
 
-
-# Function to clear the terminal
-def clear_terminal():
-    input('Press Enter to continue...')
-    os.system('cls' if os.name == 'nt' else 'clear')
+# def outputmods():
 
 
+# Main Call
 if __name__ == "__main__":
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -180,8 +183,7 @@ if __name__ == "__main__":
         s_line_color('green')
 
         option = input(
-            'Do you want to install mods through ' + colored('(1)', 'green') + ' => Terminal or ' + colored('(2)',
-                                                                                                            'green') + ' => through a txt mod list?: ')
+            colored('(1)', 'green') + ' => Terminal \n' + colored('(2)', 'green') + ' => Install mods through a formatted file \n' + colored('(3)', 'green') + ' => Beta Feature for outputting installed mods to a file.' + '\nPlease choose an option: ')
 
         if option == '1':
             os.system('cls' if os.name == 'nt' else 'clear')
