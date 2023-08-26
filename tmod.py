@@ -136,12 +136,12 @@ def install_from_file():  # Option 2
 def install_from_terminal():  # Option 1
     print(colored('Terraria Single File Installer',
           'red', attrs=['bold', 'blink']))
-    print('This section of the program installs Terraria files from a mod website.\nThis is done one at a time.')
+    print('This section of the program installs Terraria mods from a mod website.')
     print('Note: Sometimes mod names are different from the title of the mod.')
     print('Example -> Title = AutoReforge | [[Mod Name]] = AutoReroll')
     print('Example -> Title = Elemental Unleash | [[Mod Name]] = Bluemagic')
     print('Not all mods are like this, just some.')
-    print('Also be as case-sensitive as you can.')
+    print('Also if the mod you want to install is something like "Calamity Mod (No Calamity Music)" anything in brackets should be ignored. \nTry to be as case sensitive as you can.')
     s_line_color('green')
 
     user_mod = input('Enter the name of the Terraria Mod: ')
@@ -183,7 +183,7 @@ if __name__ == "__main__":
         s_line_color('green')
 
         option = input(
-            colored('(1)', 'green') + ' => Terminal \n' + colored('(2)', 'green') + ' => Install mods through a formatted file \n' + colored('(3)', 'green') + ' => Beta Feature for outputting installed mods to a file.' + '\nPlease choose an option: ')
+            colored('(1)', 'green') + ' => Install through the Terminal \n' + colored('(2)', 'green') + ' => Install mods through a formatted file \n' + colored('(3)', 'green') + ' => Beta Feature for outputting installed mods to a file.' + '\nPlease choose an option: ')
 
         if option == '1':
             os.system('cls' if os.name == 'nt' else 'clear')
