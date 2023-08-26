@@ -41,7 +41,7 @@ def download_mod(mod_name):
         if os.path.exists(f'{MODS_PATH}{mod_name}.tmod'):
             print(f'{mod_name} already installed. Skipping...')
         else:
-            with open('installhistory.txt', 'a+') as history_file:
+            with open('modhistory.txt', 'a+') as history_file:
                 lines = history_file.readlines()
                 if any(mod_name in line for line in lines):
                     print(f'Mod "{mod_name}" already in history.')
