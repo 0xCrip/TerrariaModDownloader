@@ -1,35 +1,49 @@
 import requests
 import os
 import sys
+import urllib3
+from tqdm import tqdm
 from termcolor import colored
 from bs4 import BeautifulSoup
+from urllib3.exceptions import InsecureRequestWarning
 
+# Suppress only the InsecureRequestWarning caused by SSL issues
+urllib3.disable_warnings(InsecureRequestWarning)
 # Base URL for mod downloads and path to store mods
 BASE_URL = 'https://mirror.sgkoi.dev/tModLoader/download.php?Down=mods/'  # Base of the website
 
-# CHANGE THIS, DO NOT ALTER ANYTHING ELSE.
-MODS_PATH = 'D:/dfaul/Documents/My Games/Terraria/tModLoader/Mods/'
-
 debug = False  # Enables/Disables debug features
 
+def find_terarria_mods_folder():
+    possible_paths = [
+        os.path.expanduser("~/Documents/My Games/Terraria/tModLoader/Mods"),
+        os.path.expanduser("~/My Documents/My Games/Terraria/tModLoader/Mods"),
+    ]
 
-# Function to print a separator line
+    for path in possible_paths:
+        if os.path.exists(path):
+            return path
+    return None
+
+MODS_PATH = find_terarria_mods_folder() or 'D:/dfaul/Documents/My Games/Terraria/tModLoader/Mods'
+
 def s_line():
     print('===========================================================================================================')
 
-
-# Function to print a colored separator line
 def s_line_color(color):
     line = colored(
         '===========================================================================================================',
         color)
     print(line)
 
-
-# Function to clear the terminal
 def clear_terminal():
-    input('Press Enter to continue...')
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def confirm_exit():
+    input('Press Enter to continue...')
+
+# ... (rest of the code, same as before)
+
 
 
 # Function to check if a string has only one word
@@ -49,6 +63,7 @@ def output_mods():
     s_line_color('green')
     output_file = input('What do you want to call the file?: ')
     if output_file == 'quit' or output_file == 'Quit':
+        confirm_exit()
         clear_terminal()
     if '.txt' in output_file:
         output_file = output_file[:-4]
@@ -65,22 +80,40 @@ def output_mods():
 # Function to download and install a mod
 def download_mod(mod_name):
     mod_url = f'{BASE_URL}{mod_name}.tmod'
-    response = requests.get(mod_url)
+    response = requests.get(mod_url, stream=True)
+
     if response.status_code == 200:
         if os.path.exists(f'{MODS_PATH}{mod_name}.tmod'):
             print(f'{mod_name} already installed. Skipping...')
         else:
-            with open('installhistory.txt', 'a+') as history_file:
+            with open('InstallHistory.txt', 'a+') as history_file:
                 lines = history_file.readlines()
                 if any(mod_name in line for line in lines):
                     print(f'Mod "{mod_name}" already in history.')
                 else:
                     history_file.write(f'{mod_name} {mod_url}\n')
 
-                with open(os.path.join(MODS_PATH, f'{mod_name}.tmod'), 'wb') as file:
-                    file.write(response.content)
+                mod_path = os.path.join(MODS_PATH, f'{mod_name}.tmod')
+                total_size = int(response.headers.get('content-length', 0))
+                block_size = 1024  # 1 KB
+
+                max_desc_width = 50  # Set a maximum width for the description
+                truncated_mod_name = mod_name[:max_desc_width - 3] + "..." if len(mod_name) > max_desc_width else mod_name
+
+                with open(mod_path, 'wb') as file, tqdm(
+                        desc=truncated_mod_name,  # Use the truncated name for description
+                        total=total_size,
+                        unit='B',
+                        unit_scale=True,
+                        unit_divisor=1024,
+                        ncols=80
+                ) as bar:
+                    for data in response.iter_content(block_size):
+                        bar.update(len(data))
+                        file.write(data)
 
             print(f'Mod "{mod_name}" downloaded ', colored('successfully', 'green'))
+
     else:
         s_line_color('red')
         print(f'Failed to find mod: "{mod_name}"')
@@ -92,7 +125,8 @@ def download_mod(mod_name):
         # Ask the user to provide the mod URL
         print('Press enter to quit the program or')
         mod_url = input(f'Enter the URL for the "{mod_name}" mod: ')
-        if mod_url == "":
+        if mod_url == "" or mod_url == "quit" or mod_url == "Quit":
+            confirm_exit()
             clear_terminal()
             quit()
         else:
@@ -127,12 +161,13 @@ def install_from_file():  # Option 2
     input_file = input(
         'Enter the text file name stored in the program\'s directory: ')
     if input_file == 'quit':
+        confirm_exit()
         clear_terminal()
         sys.exit()
 
     input_file = input_file.replace('.txt', '')
     install_file = input_file + '.txt'
-    if debug == True:
+    if debug:
         print('old file: ' + input_file)
         print('new file: ' + install_file)
 
@@ -152,6 +187,8 @@ def install_from_file():  # Option 2
         print(f'An error occurred: {e}')
 
     print('Program complete: Please re-run to install more mods.')
+    confirm_exit()
+    clear_terminal()
     sys.exit()
 
 
@@ -172,6 +209,7 @@ def install_from_terminal():  # Option 1
     user_mod = input('Enter the name of the Terraria Mod: ')
 
     if user_mod == 'quit':
+        confirm_exit()
         clear_terminal()
         sys.exit()
 
