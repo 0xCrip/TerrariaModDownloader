@@ -4,7 +4,6 @@ import sys
 import urllib3
 from tqdm import tqdm
 from termcolor import colored
-from bs4 import BeautifulSoup
 from urllib3.exceptions import InsecureRequestWarning
 
 # Suppress only the InsecureRequestWarning caused by SSL issues
@@ -13,6 +12,7 @@ urllib3.disable_warnings(InsecureRequestWarning)
 BASE_URL = 'https://mirror.sgkoi.dev/tModLoader/download.php?Down=mods/'  # Base of the website
 
 debug = False  # Enables/Disables debug features
+
 
 def find_terarria_mods_folder():
     possible_paths = [
@@ -25,10 +25,13 @@ def find_terarria_mods_folder():
             return path
     return None
 
+
 MODS_PATH = find_terarria_mods_folder() or 'D:/dfaul/Documents/My Games/Terraria/tModLoader/Mods'
+
 
 def s_line():
     print('===========================================================================================================')
+
 
 def s_line_color(color):
     line = colored(
@@ -36,14 +39,16 @@ def s_line_color(color):
         color)
     print(line)
 
+
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def confirm_exit():
     input('Press Enter to continue...')
 
-# ... (rest of the code, same as before)
 
+# ... (rest of the code, same as before)
 
 
 # Function to check if a string has only one word
@@ -98,7 +103,8 @@ def download_mod(mod_name):
                 block_size = 1024  # 1 KB
 
                 max_desc_width = 50  # Set a maximum width for the description
-                truncated_mod_name = mod_name[:max_desc_width - 3] + "..." if len(mod_name) > max_desc_width else mod_name
+                truncated_mod_name = mod_name[:max_desc_width - 3] + "..." if len(
+                    mod_name) > max_desc_width else mod_name
 
                 with open(mod_path, 'wb') as file, tqdm(
                         desc=truncated_mod_name,  # Use the truncated name for description
