@@ -25,7 +25,7 @@ MODS_PATH = find_terarria_mods_folder() or 'D:/USERNAME/Documents/My Games/Terra
 
 * Just open Command Terminal, navigate to the program folder and use the below command --This may be a little different depending on your python version.
 ```
-python3 tmod.py
+python3 main.py
 ```
 
 ## Help
