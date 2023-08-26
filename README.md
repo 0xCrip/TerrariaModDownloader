@@ -31,7 +31,6 @@ No issues or bugs noticed so far. Let me know if you find any.
 
 Contributors names and contact info
 
-Dylan Faulkner
 Discord -> Criptik_01#6722
 
 ## Version History
