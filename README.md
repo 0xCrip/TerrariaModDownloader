@@ -16,6 +16,10 @@ There are none. All the python imports are local.
 ### Installing
 
 * In the program you will need to change your 'MODS_PATH' with your own tModLoader mods folder. Usually located at D:\YourUsername\Documents\My Games\Terraria\tModLoader\Mods
+* Change the second option for this variable to your own directory. It will likely just be changing the username.
+```
+MODS_PATH = find_terarria_mods_folder() or 'D:/USERNAME/Documents/My Games/Terraria/tModLoader/Mods'
+```
 
 ### Executing program
 
