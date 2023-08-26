@@ -2,10 +2,15 @@ import requests
 import os
 import sys
 from termcolor import colored
+from bs4 import BeautifulSoup
 
 # Base URL for mod downloads and path to store mods
-BASE_URL = 'https://mirror.sgkoi.dev/tModLoader/download.php?Down=mods/'
+BASE_URL = 'https://mirror.sgkoi.dev/tModLoader/download.php?Down=mods/'  # Base of the website
+
+# CHANGE THIS, DO NOT ALTER ANYTHING ELSE.
 MODS_PATH = 'D:/dfaul/Documents/My Games/Terraria/tModLoader/Mods/'
+
+debug = False  # Enables/Disables debug features
 
 
 # Function to print a separator line
@@ -33,6 +38,30 @@ def one_word(user_mod):
     return len(words) == 1
 
 
+def output_mods():
+    print(colored('Terraria Mod Output', 'red', attrs=['bold', 'blink']))
+    print('This program takes all the mods you have installed in your mod directory and then outputs them to a '
+          'formatted file. \nThis can then be downloaded by someone else.')
+    print(colored('Note: ',
+                  'red') + 'Do not add file extensions to your file name. And the output links are not verified, '
+                           'just a potential link.')
+    print('Output will look like this: mod_name mod_url')
+    s_line_color('green')
+    output_file = input('What do you want to call the file?: ')
+    if output_file == 'quit' or output_file == 'Quit':
+        clear_terminal()
+    if '.txt' in output_file:
+        output_file = output_file[:-4]
+    installed_mods = [mod_file for mod_file in os.listdir(MODS_PATH) if
+                      os.path.isfile(os.path.join(MODS_PATH, mod_file))]
+    for mod_name in installed_mods:
+        if '.tmod' in mod_name:
+            url_check = f'{BASE_URL}{mod_name}'
+            with open(f'{output_file}.txt', 'a') as file:
+                file.write(f'{mod_name[:-5]} {url_check}\n')
+                print(f'{mod_name} has been written to the file.')
+
+
 # Function to download and install a mod
 def download_mod(mod_name):
     mod_url = f'{BASE_URL}{mod_name}.tmod'
@@ -49,16 +78,9 @@ def download_mod(mod_name):
                     history_file.write(f'{mod_name} {mod_url}\n')
 
                 with open(os.path.join(MODS_PATH, f'{mod_name}.tmod'), 'wb') as file:
-                    print(f'Downloading...')
                     file.write(response.content)
 
-            print(f'Mod "{mod_name}" downloaded successfully.')
-            extra = input('Do you want to install more mods? [Y/N]: ')
-            if extra.lower() == 'n':
-                sys.exit()
-            elif extra == 'quit':
-                clear_terminal()
-                sys.exit()
+            print(f'Mod "{mod_name}" downloaded ', colored('successfully', 'green'))
     else:
         s_line_color('red')
         print(f'Failed to find mod: "{mod_name}"')
@@ -110,8 +132,9 @@ def install_from_file():  # Option 2
 
     input_file = input_file.replace('.txt', '')
     install_file = input_file + '.txt'
-    print('old file: ' + input_file)
-    print('new file: ' + install_file)
+    if debug == True:
+        print('old file: ' + input_file)
+        print('new file: ' + install_file)
 
     try:
         with open(install_file, 'r') as file:
@@ -122,9 +145,9 @@ def install_from_file():  # Option 2
                     name, url = parts
                     download_mod(name)
                 else:
-                    print("Invalid Line Format:", line)
+                    print("Invalid Line Format: ", line)
     except FileNotFoundError:
-        print(f'File {install_file} not found.')
+        print(f'No file by {install_file} has been found.')
     except Exception as e:
         print(f'An error occurred: {e}')
 
@@ -135,13 +158,15 @@ def install_from_file():  # Option 2
 # Function to install mods from the terminal
 def install_from_terminal():  # Option 1
     print(colored('Terraria Single File Installer',
-          'red', attrs=['bold', 'blink']))
+                  'red', attrs=['bold', 'blink']))
     print('This section of the program installs Terraria mods from a mod website.')
     print('Note: Sometimes mod names are different from the title of the mod.')
     print('Example -> Title = AutoReforge | [[Mod Name]] = AutoReroll')
     print('Example -> Title = Elemental Unleash | [[Mod Name]] = Bluemagic')
     print('Not all mods are like this, just some.')
-    print('Also if the mod you want to install is something like "Calamity Mod (No Calamity Music)" anything in brackets should be ignored. \nTry to be as case sensitive as you can.')
+    print(
+        'Also if the mod you want to install is something like "Calamity Mod (No Calamity Music)" anything in '
+        'brackets should be ignored. \nTry to be as case sensitive as you can.')
     s_line_color('green')
 
     user_mod = input('Enter the name of the Terraria Mod: ')
@@ -160,7 +185,7 @@ def install_from_terminal():  # Option 1
     print(f'Searching for: {user_mod}, please wait...')
 
     if os.path.exists(destination_path):
-        print(f'The file {mod_name}.tmod already exists.')
+        print(f'The mod {mod_name} already exists.')
         s_line_color('green')
         extra = input('Do you want to install more mods? [Y/N]: ')
         if extra.lower() == 'n':
@@ -168,22 +193,21 @@ def install_from_terminal():  # Option 1
     else:
         download_mod(mod_name)
 
-# def outputmods():
 
-
-# Main Call
 if __name__ == "__main__":
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print(colored('Terraria Mod Installer',
-              'red', attrs=['bold', 'blink']))
+        print(colored('Terraria Mod Installer', 'red', attrs=['bold', 'blink']))
         print('The main aim of this program is to make it easy to install Terraria mods.')
         print('Either through the Mod name or through a friend\'s formatted mod list.')
         print('Select an option for more information.')
         s_line_color('green')
 
         option = input(
-            colored('(1)', 'green') + ' => Install through the Terminal \n' + colored('(2)', 'green') + ' => Install mods through a formatted file \n' + colored('(3)', 'green') + ' => Beta Feature for outputting installed mods to a file.' + '\nPlease choose an option: ')
+            colored('(1)', 'green') + '    => Install through the Terminal \n' +
+            colored('(2)', 'green') + '    => Install mods through a formatted file \n' +
+            colored('(3)', 'green') + '    => Output installed mods to a file \n' +
+            colored('(Quit)', 'red') + ' => Quit the program\nChoose an option: ')
 
         if option == '1':
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -191,6 +215,11 @@ if __name__ == "__main__":
         elif option == '2':
             os.system('cls' if os.name == 'nt' else 'clear')
             install_from_file()
+        elif option == '3':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            output_mods()
         elif option == 'quit':
             os.system('cls' if os.name == 'nt' else 'clear')
             sys.exit()
+        else:
+            print("That is not an option, try again.")
