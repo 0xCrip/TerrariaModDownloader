@@ -49,8 +49,10 @@ Discord -> Criptik_01#6722
 
 ## Version History
 
-- 0.1
+- 1.0
   - Initial Release
+- 1.1
+  - Option 3 Beta - Release
 
 ## Acknowledgments
 
