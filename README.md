@@ -1,7 +1,5 @@
 # TerrariaModDownloader
 
-By DylanCTF on GitHub
-
 ## Description
 
 A script designed to make downloading scripts on Terraria relatively easy. It come with 3 options.
@@ -46,6 +44,7 @@ No issues or bugs noticed so far. Let me know if you find any.
 Contributors names and contact info
 
 Discord -> Criptik_01#6722
+By DylanCTF on GitHub
 
 ## Version History
 
