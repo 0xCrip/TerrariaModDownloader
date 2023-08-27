@@ -39,8 +39,11 @@ Discord -> Criptik_01#6722
 
 ## Version History
 
-* 0.1
+* 1.0
     * Initial Release
+* 1.1
+    * Full Release
+
 
 ## Acknowledgments
 *  None so far, if you do repost this project in any way. Please leave my name on it as I did work on this by myself. Thanks.
