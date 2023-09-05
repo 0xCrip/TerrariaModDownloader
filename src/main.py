@@ -134,7 +134,6 @@ def download_mod(mod_name):
         if mod_url == "" or mod_url == "quit" or mod_url == "Quit":
             confirm_exit()
             clear_terminal()
-            quit()
         else:
             download_mod_with_url(mod_name, mod_url)
 
