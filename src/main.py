@@ -6,7 +6,6 @@ from tqdm import tqdm
 from termcolor import colored
 from urllib3.exceptions import InsecureRequestWarning
 
-# Suppress only the InsecureRequestWarning caused by SSL issues
 urllib3.disable_warnings(InsecureRequestWarning)
 # Base URL for mod downloads and path to store mods
 BASE_URL = 'https://mirror.sgkoi.dev/tModLoader/download.php?Down=mods/'  # Base of the website
@@ -47,11 +46,6 @@ def clear_terminal():
 def confirm_exit():
     input('Press Enter to continue...')
 
-
-# ... (rest of the code, same as before)
-
-
-# Function to check if a string has only one word
 def one_word(user_mod):
     words = user_mod.split()
     return len(words) == 1
@@ -81,8 +75,6 @@ def output_mods():
                 file.write(f'{mod_name[:-5]} {url_check}\n')
                 print(f'{mod_name} has been written to the file.')
 
-
-# Function to download and install a mod
 def download_mod(mod_name):
     mod_url = f'{BASE_URL}{mod_name}.tmod'
     response = requests.get(mod_url, stream=True)
@@ -138,7 +130,6 @@ def download_mod(mod_name):
             download_mod_with_url(mod_name, mod_url)
 
 
-# Function to download mod with provided URL
 def download_mod_with_url(mod_name, mod_url):
     mod_path = f'{MODS_PATH}{mod_name}.tmod'
     response = requests.get(mod_url)
@@ -148,8 +139,6 @@ def download_mod_with_url(mod_name, mod_url):
     else:
         print(f'The {mod_name}:URL is not working. Are you sure it is valid?')
 
-
-# Function to install mods from a file
 def install_from_file():  # Option 2
     print(colored('Terraria File Installer', 'red', attrs=['bold', 'blink']))
     print(
@@ -197,7 +186,6 @@ def install_from_file():  # Option 2
     sys.exit()
 
 
-# Function to install mods from the terminal
 def install_from_terminal():  # Option 1
     print(colored('Terraria Single File Installer',
                   'red', attrs=['bold', 'blink']))
